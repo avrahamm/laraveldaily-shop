@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +30,6 @@ Route::get('/contact', function () {
 })->name('contact');
 
 Auth::routes();
+
+Route::resource('categories', CategoryController::class)
+    ->middleware('auth');
