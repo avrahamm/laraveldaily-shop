@@ -32,8 +32,7 @@ Route::get('/contact', function () {
 
 Auth::routes();
 
-Route::resource('categories', CategoryController::class)
-    ->middleware('auth');
-
-Route::resource('products', ProductController::class)
-    ->middleware('auth');
+Route::group(['middleware' => 'auth'], function() {
+    Route::resource('categories', CategoryController::class);
+    Route::resource('products', ProductController::class);
+});
