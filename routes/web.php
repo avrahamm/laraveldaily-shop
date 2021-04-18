@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,4 +33,7 @@ Route::get('/contact', function () {
 Auth::routes();
 
 Route::resource('categories', CategoryController::class)
+    ->middleware('auth');
+
+Route::resource('products', ProductController::class)
     ->middleware('auth');
