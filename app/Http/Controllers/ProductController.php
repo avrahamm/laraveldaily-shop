@@ -39,12 +39,16 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
+        $path = '';
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('photos','public');
+        }
         Product::create([
             'name' => $request->name,
             'price' => $request->price,
             'description' => $request->description,
             'category_id' => $request->category_id,
-            'photo' => ''
+            'photo' => $path,
         ]);
 
         return redirect()->route('products.index');
@@ -77,19 +81,23 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreProductRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreProductRequest $request, $id)
     {
         $product = Product::findOrFail($id);
+        $path = '';
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('photos','public');
+        }
         $product->update([
             'name' => $request->name,
             'price' => $request->price,
             'description' => $request->description,
             'category_id' => $request->category_id,
-            'photo' => ''
+            'photo' => $path,
         ]);
 
         return redirect()->route('products.index');

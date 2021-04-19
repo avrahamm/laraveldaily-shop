@@ -19,29 +19,30 @@
               enctype="multipart/form-data" >
             @csrf
 
-            Name
+            <label for="name">Name</label>
             <br />
-            <input type="text" name="name" value="{{ old('name') }}"
+            <input id="name" type="text" name="name" value="{{ old('name') }}"
                 class="form-control"
             >
 
             <br />
-            Price
+            <label for="price">Price</label>
             <br />
-            <input type="text" name="price" value="{{ old('price') }}"
+            <input id="price" type="text" name="price" value="{{ old('price') }}"
                    class="form-control"
             >
 
             <br />
-            Description
+
+            <label for="description">Description</label>
             <br />
-            <textarea name="description" class="form-control" rows="3"
+            <textarea id="description" name="description" class="form-control" rows="3"
             >{{ old('description') }}</textarea>
 
             <br />
-            Photo
+            <label for="photo">Photo</label>
             <br />
-            <input type="file" name="photo" value=""
+            <input id="photo" type="file" name="photo" value="{{ old('photo') }}"
                    class="form-control"
             >
 
