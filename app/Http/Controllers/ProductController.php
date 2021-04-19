@@ -41,7 +41,12 @@ class ProductController extends Controller
     {
         $path = '';
         if ($request->hasFile('photo')) {
-            $path = $request->file('photo')->store('photos','public');
+            $path = $request->file('photo')
+                ->storeAs(
+                    'photos',
+                    $request->name,
+                    'public'
+                );
         }
         Product::create([
             'name' => $request->name,
@@ -90,7 +95,12 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $path = '';
         if ($request->hasFile('photo')) {
-            $path = $request->file('photo')->store('photos','public');
+            $path = $request->file('photo')
+                ->storeAs(
+                    'photos',
+                    $request->name,
+                    'public'
+                );
         }
         $product->update([
             'name' => $request->name,
