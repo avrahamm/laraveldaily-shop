@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProductRequest;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -39,22 +40,17 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $path = '';
-        if ($request->hasFile('photo')) {
-            $path = $request->file('photo')
-                ->storeAs(
-                    'photos',
-                    $request->name,
-                    'public'
-                );
-        }
-        Product::create([
+        $createdData = [
             'name' => $request->name,
             'price' => $request->price,
             'description' => $request->description,
             'category_id' => $request->category_id,
-            'photo' => $path,
-        ]);
+        ];
+        if ($request->hasFile('photo')) {
+            $path = $this->getFilePath($request);
+            $createdData['photo'] = $path;
+        }
+        Product::create($createdData);
 
         return redirect()->route('products.index');
     }
@@ -93,22 +89,17 @@ class ProductController extends Controller
     public function update(StoreProductRequest $request, $id)
     {
         $product = Product::findOrFail($id);
-        $path = '';
-        if ($request->hasFile('photo')) {
-            $path = $request->file('photo')
-                ->storeAs(
-                    'photos',
-                    $request->name,
-                    'public'
-                );
-        }
-        $product->update([
+        $updateData = [
             'name' => $request->name,
             'price' => $request->price,
             'description' => $request->description,
             'category_id' => $request->category_id,
-            'photo' => $path,
-        ]);
+        ] ;
+        if ($request->hasFile('photo')) {
+            $path = $this->getFilePath($request);
+            $updateData['photo'] = $path;
+        }
+        $product->update($updateData);
 
         return redirect()->route('products.index');
     }
@@ -122,8 +113,28 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
+        $photoPath = $product->photo;
+//        if (Storage::disk('public')->exists($photoPath)) {
+        if (Storage::exists($photoPath)) {
+            Storage::delete($photoPath);
+        }
         $product->delete();
-
         return redirect()->route('products.index');
+    }
+
+    /**
+     * @param StoreProductRequest $request
+     * @return false|string
+     */
+    private function getFilePath(StoreProductRequest $request)
+    {
+        $extension = $request->file('photo')->extension();
+        $path = $request->file('photo')
+            ->storeAs(
+                'photos',
+                ($request->name) . '.' . $extension,
+                'public'
+            );
+        return $path;
     }
 }

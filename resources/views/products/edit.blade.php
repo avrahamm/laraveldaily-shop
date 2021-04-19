@@ -35,7 +35,8 @@
             <br />
             <label for="photo">Photo</label>
             <br />
-            <img src="/storage/{{ $product->photo }}" alt="product"
+            <img id="photo"
+                 src="{{ asset('/storage/'.$product->photo) }}" alt="product"
                 width="100" height="100"
             >
             <input id="photo" type="file" name="photo" value="{{ old('photo') }}"

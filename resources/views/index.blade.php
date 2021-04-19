@@ -49,7 +49,7 @@
                 <div class="card h-100">
                     <a href="#">
                         <img class="card-img-top"
-                             src="/storage/{{ $product->photo }}" alt="product"
+                             src="{{ asset('/storage/'.$product->photo) }}" alt="product"
                         height="300"
                         ></a>
                     <div class="card-body">
