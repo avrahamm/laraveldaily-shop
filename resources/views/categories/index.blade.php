@@ -19,6 +19,10 @@
                 <tr>
                     <td>{{ $category->name }}</td>
                     <td>
+                        <a class="btn btn-primary"
+                           href="{{ route('categories.show', $category->id ) }}">
+                            Show
+                        </a>
                         <a class="btn btn-primary" href="{{ route('categories.edit', $category->id ) }}">Edit</a>
 
                         <form action="{{ route('categories.destroy', $category->id) }}" method="POST"

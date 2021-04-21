@@ -12,7 +12,8 @@
         @foreach ($categories as $category)
             <div class="carousel-item @if ($loop->first) active @endif">
                 <h2 style="text-align: center;"> Category {{ $category->name  }}</h2>
-                <img class="d-block img-fluid" src="http://placehold.it/900x350"
+                <img class="d-block img-fluid"
+                     src="{{ asset('/storage/'.$category->photo) }}"
                      alt="slide # {{ $loop->index }}">
             </div>
         @endforeach

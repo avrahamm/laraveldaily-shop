@@ -36,9 +36,11 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        Category::create([
-            'name' => $request->name
-        ]);
+        $createdData = [
+            'name' => $request->name,
+            'photo' => $this->getFilePath($request),
+        ];
+        Category::create($createdData);
 
         return redirect()->route('categories.index');
     }
@@ -51,7 +53,8 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        $category = Category::findOrFail($id);
+        return view('categories.show', compact('category'));
     }
 
     /**
@@ -76,9 +79,14 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $category = Category::findOrFail($id);
-        $category->update([
+        $updateData = [
             'name' => $request->name
-        ]);
+        ];
+        if ($request->hasFile('photo')) {
+            $path = $this->getFilePath($request);
+            $updateData['photo'] = $path;
+        }
+        $category->update($updateData);
 
         return redirect()->route('categories.index');
     }
@@ -95,5 +103,24 @@ class CategoryController extends Controller
         $category->delete();
 
         return redirect()->route('categories.index');
+    }
+
+    /**
+     * @param Request $request
+     * @return false|string
+     */
+    private function getFilePath(Request $request)
+    {
+        $path = Category::$defaultPhoto;
+        if ($request->hasFile('photo')) {
+            $extension = $request->file('photo')->extension();
+            $path = $request->file('photo')
+                ->storeAs(
+                    'categories',
+                    ($request->name) . '.' . $extension,
+                    'public'
+                );
+        }
+        return $path;
     }
 }

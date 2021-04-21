@@ -9,6 +9,8 @@ class Product extends Model
 {
     use HasFactory;
 
+    public static $defaultPhoto = 'products/default.png';
+
     protected $guarded = [];
 
     public function category()

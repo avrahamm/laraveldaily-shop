@@ -5,13 +5,24 @@
 
         <h1 class="my-4">New Category</h1>
 
-        <form action="{{ route('categories.store') }}" method="POST" >
+        <form action="{{ route('categories.store') }}" method="POST"
+              enctype="multipart/form-data"
+        >
             @csrf
-            Name
+
+            <label for="name">Name</label>
             <br />
-            <input type="text" name="name" value=""
+            <input id="name" type="text" name="name" value=""
                 class="form-control"
             >
+
+            <br />
+            <label for="photo">Photo</label>
+            <br />
+            <input id="photo" type="file" name="photo" value="{{ old('photo') }}"
+                   class="form-control"
+            >
+
             <br />
             <input type="submit" class="btn btn-primary" value="Save">
             <br />

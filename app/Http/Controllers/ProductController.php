@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreProductRequest;
 use Illuminate\Support\Facades\Storage;
 
@@ -131,7 +130,7 @@ class ProductController extends Controller
         $extension = $request->file('photo')->extension();
         $path = $request->file('photo')
             ->storeAs(
-                'photos',
+                'products',
                 ($request->name) . '.' . $extension,
                 'public'
             );
