@@ -9,7 +9,7 @@ class Category extends Model
 {
     use HasFactory;
 
-    public static $defaultPhoto = 'categories/default.png';
+    public static $defaultPhoto = 'defaults/categories/default.png';
 
     protected $guarded = [];
 

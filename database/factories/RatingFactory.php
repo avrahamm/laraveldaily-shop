@@ -2,18 +2,19 @@
 
 namespace Database\Factories;
 
-use App\Models\Category;
 use App\Models\Product;
+use App\Models\Rating;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ProductFactory extends Factory
+class RatingFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Product::class;
+    protected $model = Rating::class;
 
     /**
      * Define the model's default state.
@@ -23,11 +24,9 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->firstName(),
-            'price' => $this->faker->randomNumber(3),
-            'photo' => $this->faker->imageUrl(),
-            'description' => $this->faker->text,
-            'category_id' => Category::inRandomOrder()->first()->id,
+            'rating' => $this->faker->numberBetween(1,5),
+            'user_id' => User::inRandomOrder()->first()->id,
+            'product_id' => Product::inRandomOrder()->first()->id,
         ];
     }
 }
