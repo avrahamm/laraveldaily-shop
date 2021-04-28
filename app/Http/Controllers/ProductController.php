@@ -115,7 +115,9 @@ class ProductController extends Controller
         $photoPath = $product->photo;
 //        if (Storage::disk('public')->exists($photoPath)) {
         if (Storage::exists($photoPath)) {
-            Storage::delete($photoPath);
+            if ( $photoPath !== Product::$defaultPhoto) {
+                Storage::delete($photoPath);
+            }
         }
         $product->delete();
         return redirect()->route('products.index');

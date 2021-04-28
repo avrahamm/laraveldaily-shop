@@ -18,8 +18,12 @@ class CreateRatingsTable extends Migration
             $table->unsignedSmallInteger('rating');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('product_id');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

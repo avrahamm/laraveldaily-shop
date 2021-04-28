@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -100,8 +101,15 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $category = Category::findOrFail($id);
+        $photoPath = $category->photo;
+//        if (Storage::disk('public')->exists($photoPath)) {
+        if (Storage::exists($photoPath)) {
+//            dd($photoPath, Category::$defaultPhoto);
+            if ( $photoPath !== Category::$defaultPhoto) {
+                Storage::delete($photoPath);
+            }
+        }
         $category->delete();
-
         return redirect()->route('categories.index');
     }
 
