@@ -24,6 +24,7 @@ class CreateRatingsTable extends Migration
             $table->foreign('product_id')->references('id')->on('products')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+            $table->unique(['user_id','product_id']);
             $table->timestamps();
         });
     }
