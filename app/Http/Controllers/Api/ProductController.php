@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Product\StoreRequest;
+use App\Http\Requests\Product\UpdateRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
-use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
 {
@@ -24,19 +26,18 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreRequest $request
+     * @return mixed
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        $productData = [
-            'id' => $request->id,
-            'name' => $request->name,
-            'price' => $request->price,
-            'photo' => $request->photo,
-            'description' => $request->description,
-            'category_id' => $request->category_id,
-        ];
+        $productData = [];
+        $productFields = self::getProductFields();
+        $productFields->each(
+            function ($key) use ($request, &$productData) {
+                $productData[$key] = $request->$key;
+            }
+        );
         $product = Product::create($productData);
         return $product;
     }
@@ -54,23 +55,39 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param UpdateRequest $request
+     * @param $id
+     * @return mixed
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $productData = [];
+        $productFields = self::getProductFields();
+        $productFields->each(function($key) use ($request,$product,&$productData) {
+                $productData[$key] = $request->$key ?? $product->$key;
+            }
+        );
+        $product->update($productData);
+        return $product;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Product $product
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    private static function getProductFields()
+    {
+        $productFields = collect(['name','price','photo','description','category_id']);
+        return $productFields;
     }
 }

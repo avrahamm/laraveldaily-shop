@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Product\UpdateRequest;
 use App\Models\Category;
 use App\Models\Product;
-use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\Product\StoreRequest;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -38,10 +40,10 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreProductRequest  $request
+     * @param  StoreRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreProductRequest $request)
+    public function store(StoreRequest $request)
     {
         $createdData = [
             'name' => $request->name,
@@ -85,11 +87,11 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  StoreProductRequest  $request
+     * @param  StoreRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreProductRequest $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
         $product = Product::findOrFail($id);
         $updateData = [
@@ -128,10 +130,11 @@ class ProductController extends Controller
     }
 
     /**
-     * @param StoreProductRequest $request
+     * @param FormRequest $request
+     * TODO! check FormRequest is Ok for both store and update
      * @return false|string
      */
-    private function getFilePath(StoreProductRequest $request)
+    private function getFilePath(FormRequest $request)
     {
         $extension = $request->file('photo')->extension();
         $path = $request->file('photo')
