@@ -131,7 +131,6 @@ class ProductController extends Controller
 
     /**
      * @param FormRequest $request
-     * TODO! check FormRequest is Ok for both store and update
      * @return false|string
      */
     private function getFilePath(FormRequest $request)

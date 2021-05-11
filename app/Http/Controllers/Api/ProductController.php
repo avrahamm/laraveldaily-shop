@@ -7,6 +7,7 @@ use App\Http\Requests\Product\StoreRequest;
 use App\Http\Requests\Product\UpdateRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
@@ -38,6 +39,12 @@ class ProductController extends Controller
                 $productData[$key] = $request->$key;
             }
         );
+
+        if ($request->hasFile('photo')) {
+            $path = $this->getFilePath($request);
+            $productData['photo'] = $path;
+        }
+
         $product = Product::create($productData);
         return $product;
     }
@@ -83,6 +90,25 @@ class ProductController extends Controller
     {
         $product->delete();
         return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * TODO! Copied from/Used in both web and api ProductController,
+     *    consider moving to helper.
+     *
+     * @param FormRequest $request
+     * @return false|string
+     */
+    private function getFilePath(FormRequest $request)
+    {
+        $extension = $request->file('photo')->extension();
+        $path = $request->file('photo')
+            ->storeAs(
+                'products',
+                ($request->name) . '.' . $extension,
+                'public'
+            );
+        return $path;
     }
 
     private static function getProductFields()

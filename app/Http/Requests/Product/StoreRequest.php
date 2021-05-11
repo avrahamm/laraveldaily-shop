@@ -26,7 +26,7 @@ class StoreRequest extends FormRequest
         return [
             'name' => 'required|string',
             'price' => 'required|numeric',
-            'category_id' => 'required',
+            'category_id' => 'required|numeric',
         ];
     }
 }
