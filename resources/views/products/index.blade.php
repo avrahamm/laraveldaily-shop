@@ -18,7 +18,7 @@
                 <th>Price in EUR</th>
                 <th></th>
             </tr>
-            @foreach($products as $product)
+            @forelse($products as $product)
                 <tr>
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->category->name }}</td>
@@ -36,8 +36,14 @@
                         </form>
                     </td>
                 </tr>
-            @endforeach
+            @empty
+               <tr>
+                   <td colspan="3">No products found</td>
+               </tr>
+            @endforelse
         </table>
+
+        {{ $products->links() }}
 
     </div>
 @endsection
