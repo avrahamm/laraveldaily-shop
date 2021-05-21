@@ -38,14 +38,18 @@ class ProductsTest extends TestCase
         ]);
     }
 
+    /**
+     * @group create
+     */
     public function test_store_product_exists_in_database()
     {
         $productName = 'p11';
         $productPrice = 444;
+        $productDescription = "aaa";
         $response = $this->actingAs($this->adminUser)->post('products', [
             'name' => $productName,
             'price' => $productPrice,
-            'description' => "aaa",
+            'description' => $productDescription,
             'category_id' => 1,
         ]);
 
@@ -133,6 +137,9 @@ class ProductsTest extends TestCase
         $this->assertEquals($productsCount-1, Product::count());
     }
 
+    /**
+     * @group create
+     */
     public function test_create_product_file_uploaded()
     {
         $productName = 'p11';
