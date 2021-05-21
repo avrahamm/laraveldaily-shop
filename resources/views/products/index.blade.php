@@ -5,11 +5,12 @@
 
         <h1 class="my-4">Products</h1>
 
-        <a href="{{ route('products.create') }}" class="btn btn-info">New Product</a>
-        <br>
-        <br>
-        <br>
-
+        @if(auth()->user()->is_admin)
+            <a href="{{ route('products.create') }}" class="btn btn-info">New Product</a>
+            <br>
+            <br>
+            <br>
+        @endif
         <table class="table">
             <tr>
                 <th>Name</th>

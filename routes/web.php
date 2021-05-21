@@ -34,5 +34,20 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth'], function() {
     Route::resource('categories', CategoryController::class);
+    Route::middleware('is_admin')->group(function () {
+        Route::get('categories/create', [CategoryController::class, 'create'])->name('categories.create');
+        Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
+    });
+
+//    Route::get('products', [ProductController::class, 'index'])->name('products.index');
     Route::resource('products', ProductController::class);
+    Route::middleware('is_admin')->group(function () {
+        Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
+        Route::get('products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
+        Route::post('products', [ProductController::class, 'store'])->name('products.store');
+        Route::patch('products/{id}', [ProductController::class, 'update'])->name('products.update');
+        Route::put('products/{id}', [ProductController::class, 'update'])->name('products.update');
+        Route::delete('products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+    });
+
 });
