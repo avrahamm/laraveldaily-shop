@@ -70,4 +70,64 @@ class ProductsTest extends TestCase
         $response->assertSee($product->name);
         $response->assertSee($product->price);
     }
+
+    public function test_update_product_correct_validation_error()
+    {
+        $productName = 'p11';
+        $productPrice = 444;
+        $product = Product::factory()->create([
+            'name' => $productName,
+            'price' => $productPrice,
+            'description' => "aaa",
+            'category_id' => 1,
+        ]);
+
+        $response = $this->actingAs($this->adminUser)
+            ->put('/products/' . $product->id,
+                ['name' => $product->name, 'price' => $product->price],
+                );
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors(['description']);
+    }
+
+    public function test_update_product_json_correct_validation_error()
+    {
+        $productName = 'p11';
+        $productPrice = 444;
+        $product = Product::factory()->create([
+            'name' => $productName,
+            'price' => $productPrice,
+            'description' => "aaa",
+            'category_id' => 1,
+        ]);
+
+        $response = $this->actingAs($this->adminUser)
+            ->patch('/products/' . $product->id,
+                ['name' => $product->name, 'price' => $product->price],
+                ['Accept' => 'Application/json']
+            );
+
+        $response->assertStatus(422);
+    }
+
+    public function test_delete_product_from_database()
+    {
+        $productName = 'p11';
+        $productPrice = 444;
+        $product = Product::factory()->create([
+            'name' => $productName,
+            'price' => $productPrice,
+            'description' => "aaa",
+            'category_id' => 1,
+        ]);
+        $productsCount = Product::count();
+
+        $response = $this->actingAs($this->adminUser)
+            ->delete('/products/' . $product->id
+            );
+
+        $response->assertStatus(302);
+        $this->assertEquals($productsCount-1, Product::count());
+    }
 }

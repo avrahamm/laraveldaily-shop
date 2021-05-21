@@ -39,8 +39,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
     });
 
-//    Route::get('products', [ProductController::class, 'index'])->name('products.index');
-    Route::resource('products', ProductController::class);
+    Route::get('products', [ProductController::class, 'index'])->name('products.index');
     Route::middleware('is_admin')->group(function () {
         Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
         Route::get('products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
