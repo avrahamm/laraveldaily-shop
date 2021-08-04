@@ -25,4 +25,5 @@
     @endforeach
 
 </div>
+{{ $products->links() }}
 <!-- /.row -->

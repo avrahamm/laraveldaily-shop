@@ -16,7 +16,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('category')->get();
+        $products = Product::with('category')->paginate(4);
 //        $products = \DB::table('products')
 //            ->join('categories', 'products.category_id', '=', 'categories.id')
 //            ->select('products.*', 'categories.name as category_name')
