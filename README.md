@@ -16,8 +16,8 @@ such as testing branch inspired by testing course, and etc..
 There are several options to build the app on your local machine. <br/>
 - Laravel sail <br/>
 I built on Windows Home 10 with WSL2 and docker, using  [laravel sail](https://laravel.com/docs/8.x/sail ) <br/>
-You can take a look at README-laravel-sail-setup.md for more instructions.<br/>
+You can take a look at [README-laravel-sail-setup.md](https://github.com/avrahamm/laraveldaily-shop/blob/master/README-laravel-sail-setup.md) for more instructions.<br/> 
 - XAMP <br/>
 XAMP option is available as well. <br/>
-You can take a look at README-xamp-setup.md for more instructions.<br/>
+You can take a look at [README-xamp-setup.md](https://github.com/avrahamm/laraveldaily-shop/blob/master/README-xamp-setup.md) for more instructions.<br/>
   
