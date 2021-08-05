@@ -6,19 +6,61 @@
 
 ## About my laraveldaily-shop
 
-There is simple CRUD shop app built in laravel 8, inspired by several [Laraveldaily courses](https://laraveldaily.teachable.com/courses/ ) about basic features of Laravel framework. There are users, but maily categories and products (and ratings under construction). <br/>
+There is simple CRUD shop app built in laravel 8, inspired by several [Laraveldaily courses](https://laraveldaily.teachable.com/courses/ ) about basic features of Laravel framework. There are users, but mainly categories and products (and ratings under construction). <br/>
 You will find respective Models, Controllers, views. <br/>
 That's master branch. <br/>
 On other branches, I practice other topics inspired by respective [Laraveldaily course](https://laraveldaily.teachable.com/courses/ ), <br/>
-suche as testing branch inspired by testing course, and etc.. 
+such as testing branch inspired by testing course, and etc.. 
 
-## Building the app on your local machine
+## Building the app on your local machine - with laravel sail
 I built on Windows Home 10 with WSL2 and docker, using  [laravel sail](https://laravel.com/docs/8.x/sail ) <br/>
-
-git clone https://github.com/avrahamm/laraveldaily-shop.git </br>
+Turn on your desktop docker. <br/>
+```
+git clone https://github.com/avrahamm/laraveldaily-shop.git 
 cd laraveldaily-shop
+```
+Now copy .env.example and update DB block, for example you can take
+```
+DB_CONNECTION=mysql
+#DB_HOST=127.0.0.1
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=first
+DB_USERNAME=sail
+DB_PASSWORD=password
+#DB_USERNAME=root
+#DB_PASSWORD=
+```
 
-### mysql container
+```
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v $(pwd):/opt \
+    -w /opt \
+    laravelsail/php80-composer:latest \
+    composer install --ignore-platform-reqs
+ 
+# if you want to rebuild
+# sail build --no-cache   
+# usually, run
+sail up
+
+```
+
+## laravel container shell
+open another bash shell to run artisan scripts to migrate tables, seed data, link files storage - inside container. <br/>
+sail up creates database and user with credentials given in .env file. </br>
+If had problems, may be 'mysql container troubleshoot' section can help.
+```
+sail shell
+sail@1010be0b0584:/var/www/html$ # there is some chance data seeding fails. If so just run again and it will finally succeed.
+sail@1010be0b0584:/var/www/html$ php artisan migrate:fresh --seed
+sail@1010be0b0584:/var/www/html$ php artisan storage:link
+```
+
+### mysql container troubleshoot
+Only if mysql user was not set properly by sail up, you can do it manually. <br/>
+Otherwise, forward to next step. <br/>
 ```
  docker ps
 CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS                    PORTS                                                  NAMES
@@ -38,20 +80,11 @@ Query OK, 0 rows affected (0.03 sec)
 
 mysql>
 ```
-## laravel container shell
-open another bash shell
-```
-sail shell
-sail@1010be0b0584:/var/www/html$ php artisan migrate
-php artisan db:seed
-php artisan storage:link
-```
-## laravel container run sail shell
-open another bash shell
-```
-sail up
-```
+
+## Running in browser 
+That's happy end !? <br/>
 open browser on localhost:80, log in with pre seeded admin user: <br/>
 admin@admin.com <br/>
 password <br/>
+You can rock! <br/>
 
